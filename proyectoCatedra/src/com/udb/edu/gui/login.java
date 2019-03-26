@@ -5,6 +5,9 @@
  */
 package com.udb.edu.gui;
 import com.udb.edu.clases.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -108,19 +111,17 @@ principal p = new principal();
     String nombre = this.txtUsuario.getText();
       char[] Contra = this.txtContra.getPassword();
      String contra = new String(Contra);
-     String usuario = p.validarFrame(nombre, contra);
-        if("admin".equals(usuario)){
-       JOptionPane.showMessageDialog(null,"Login correcto \n como Super usuario") ;
-       new fPrincipal(usuario).setVisible(true);
-    this.dispose();
-        }else
-        if("usuario".equals(usuario)){
-         JOptionPane.showMessageDialog(null,"Login correcto \n como Usuario ternico") ;
-         new fPrincipal(usuario).setVisible(true);
-         this.dispose();
+    try {
+       boolean n =  p.validarFrame(nombre, contra);
+        if(n == true){
+        this.dispose();
+         new fPrincipal(true).setVisible(true);
         }else{
-        JOptionPane.showMessageDialog(null,"Usuario o contra incorrectas");
+        JOptionPane.showMessageDialog(null,"El usuario no existe");
         }
+    } catch (SQLException ex) {
+        Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+    }
       
     }//GEN-LAST:event_btnSubmitActionPerformed
 

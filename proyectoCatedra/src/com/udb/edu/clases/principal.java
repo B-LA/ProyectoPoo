@@ -1,11 +1,15 @@
 
 package com.udb.edu.clases;
-import com.udb.edu.gui.*;
+import com.udb.edu.conexion.*;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author neon
  */
 public class principal {
+conexion n = new conexion();
     
  private String nombre;
  private String contra;
@@ -26,17 +30,14 @@ public class principal {
         this.contra = contra;
     }
  
-    public String validarFrame(String nombre,String contra){
+    public boolean validarFrame(String nombre,String contra) throws SQLException{
          this.nombre = nombre;
          this.contra = contra;
-           if("root".equals(nombre) && "root".equals(contra)){
-           return "admin";
-           }else
-               if("ricardo".equals(nombre) && "alberto".equals(contra)){
-         return "usuario";
-           }else{
-                   return "";
-               }
+       boolean valorN =   n.obtenerUsuario(nombre, contra);
+       if(valorN == true){
+       return true;
+       }else
+    return false;
     }
     
 }
