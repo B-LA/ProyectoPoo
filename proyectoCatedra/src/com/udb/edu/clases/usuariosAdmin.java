@@ -43,4 +43,9 @@ this.cargo = cargo;
         this.cargo = cargo;
     }
     
+    @Override
+    public String toString(){
+        return this.nombre;
+    }
+    
 }

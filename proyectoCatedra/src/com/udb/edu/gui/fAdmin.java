@@ -16,18 +16,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author neon
  */
+
 public class fAdmin extends javax.swing.JFrame {
 DefaultTableModel modeloU =  new DefaultTableModel();
 DefaultTableModel modeloD =  new DefaultTableModel();
-usuariosAdmin deleT = null;
 conexion con = new conexion();
     /**
      * Creates new form fAdmin
      */
     public fAdmin() {
-        initComponents();
         mostrarEmpleados();
         mostrarAdministradores();
+        initComponents();
     }
 
     private  void mostrarEmpleados(){
@@ -61,12 +61,12 @@ conexion con = new conexion();
     modeloD.addColumn("Contra");
     modeloD.addColumn("Cargo");
     
-    ArrayList<usuariosAdmin> uA =  con.obtenerAdministradores();
-    int numeroAdministradores = uA.size();
+    ArrayList<usuariosAdmin> deleT =  con.obtenerAdministradores();
+    int numeroAdministradores = deleT.size();
     modeloD.setNumRows(numeroAdministradores);
     
     for(int i = 0;i<numeroAdministradores;i++){
-   usuariosAdmin ad = uA.get(i);
+   usuariosAdmin ad = deleT.get(i);
    String nombre = ad.getNombre();
    String contra = ad.getContra();
    String cargo = ad.getCargo();
@@ -91,7 +91,7 @@ conexion con = new conexion();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblUsuario = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -99,16 +99,21 @@ conexion con = new conexion();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tablaAdministradores = new javax.swing.JTable();
+        tblAdmin = new javax.swing.JTable();
         jButton6 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(modeloU);
-        jScrollPane1.setViewportView(jTable1);
+        tblUsuario.setModel(modeloU);
+        jScrollPane1.setViewportView(tblUsuario);
 
         jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Agregar");
 
@@ -161,8 +166,8 @@ conexion con = new conexion();
 
         jButton2.setText("jButton2");
 
-        tablaAdministradores.setModel(modeloD);
-        jScrollPane2.setViewportView(tablaAdministradores);
+        tblAdmin.setModel(modeloD);
+        jScrollPane2.setViewportView(tblAdmin);
 
         jButton6.setText("Agregar");
 
@@ -239,10 +244,24 @@ conexion con = new conexion();
        int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
        
        if(mensaje == 0){
-       modeloD.removeRow(this.tablaAdministradores.getSelectedRow());
-       con.borrarAdministrador(deleT);
+         int fila = tblAdmin.getSelectedRow();
+           String nombre = tblAdmin.getValueAt(fila, 0).toString();
+       con.borrarAdministrador(nombre);
+       modeloD.removeRow(this.tblAdmin.getSelectedRow());
        }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
+       
+       if(mensaje == 0){
+             int fila = tblUsuario.getSelectedRow();
+           String nombre = tblUsuario.getValueAt(fila, 0).toString();
+       con.borrarAdministrador(nombre);
+       modeloD.removeRow(this.tblUsuario.getSelectedRow());
+      
+       }        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -292,7 +311,7 @@ conexion con = new conexion();
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable tablaAdministradores;
+    private javax.swing.JTable tblAdmin;
+    private javax.swing.JTable tblUsuario;
     // End of variables declaration//GEN-END:variables
 }

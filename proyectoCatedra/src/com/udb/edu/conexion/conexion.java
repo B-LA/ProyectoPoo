@@ -56,6 +56,8 @@ public boolean obtenerUsuario(String usuario,String contra) throws SQLException 
      return false;   
 } // fin metodo usuario
 
+
+
 public ArrayList<administrador> obtenerUsuarios(){
         
         ArrayList<administrador> listaUsuarios = new ArrayList<administrador>();
@@ -131,16 +133,17 @@ public ArrayList<administrador> obtenerUsuarios(){
        return listaAdministradores;
     }
     
-public void borrarAdministrador(usuariosAdmin usuario){
+
+public void borrarUsuario(String usuario){
         try {
             
               conn = DriverManager.getConnection(this.url, this.user, this.pass);
             
-            String sql = "DELETE FROM agregar_usuarios WHERE nombre_usuario=?";
+            String sql = "DELETE FROM empleado WHERE nombre=?";
             
             prepSt = conn.prepareStatement(sql);
             
-            prepSt.setString(1, usuario.getNombre());
+            prepSt.setString(1, usuario);
  
             prepSt.executeUpdate();
             
@@ -157,7 +160,7 @@ public void borrarAdministrador(usuariosAdmin usuario){
         }
     }
 
-public void borrarUsuario(administrador usuario){
+public void borrarAdministrador(String usuario){
         try {
             
               conn = DriverManager.getConnection(this.url, this.user, this.pass);
@@ -166,7 +169,7 @@ public void borrarUsuario(administrador usuario){
             
             prepSt = conn.prepareStatement(sql);
             
-            prepSt.setString(1, usuario.getNombre());
+            prepSt.setString(1, usuario);
  
             prepSt.executeUpdate();
             
