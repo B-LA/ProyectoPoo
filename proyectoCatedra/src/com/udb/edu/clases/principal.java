@@ -1,4 +1,3 @@
-
 package com.udb.edu.clases;
 import com.udb.edu.conexion.*;
 import java.sql.SQLException;
@@ -15,30 +14,31 @@ conexion n;
  private String contra;
 private String usuario;
 
-
+    public principal() {
+        this.n = new conexion();
+    }
+ public void validarTipoDeUsuario(String usuario){
+    
+   if(usuario.equals("super")){
+ this.usuario = usuario;
+   }else
+this.usuario = usuario;
+    }
+   
+ 
  public boolean validarExistenciaUsuario(String nombre,String contra) throws SQLException{
          this.nombre = nombre;
          this.contra = contra;
        boolean valorN =   n.obtenerUsuario(nombre, contra);
        if(valorN == true){
+            validarTipoDeUsuario(nombre);
        return true;
-       }else
+       }else{
+            validarTipoDeUsuario(nombre);
     return false;
     }
+ }
  
- 
-    public void validarTipoDeUsuario(String usuario){
-    
-   if(usuario.equals("super")){
- setUsuario(usuario);   
-   }else
-setUsuario(usuario);
-    }
-
-    public principal() {
-        this.n = new conexion();
-    }
-
     public String getNombre() {
         return nombre;
     }
@@ -62,11 +62,5 @@ setUsuario(usuario);
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-
-   
-    
-
-
- 
     
 }

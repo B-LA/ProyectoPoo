@@ -18,8 +18,8 @@ import javax.swing.table.DefaultTableModel;
  */
 
 public class fAdmin extends javax.swing.JFrame {
-DefaultTableModel modeloU =  new DefaultTableModel();
-DefaultTableModel modeloD =  new DefaultTableModel();
+DefaultTableModel modeloU =  new DefaultTableModel(); //se instancia un modelo para las tablas
+DefaultTableModel modeloD =  new DefaultTableModel();//se instancia un modelo para las tablas
 conexion con = new conexion();
     /**
      * Creates new form fAdmin
@@ -31,26 +31,26 @@ conexion con = new conexion();
     }
 
     private  void mostrarEmpleados(){
-    modeloU.addColumn("Nombre");
-    modeloU.addColumn("Apellido");
-    modeloU.addColumn("Telefono");
-    modeloU.addColumn("Departamento");
+    modeloU.addColumn("Nombre"); //al modelo  pre instanciado se le agrega la  columna nombre
+    modeloU.addColumn("Apellido"); //al modelo  pre instanciado se le agrega la  columna apellido
+    modeloU.addColumn("Telefono");//al modelo  pre instanciado se le agrega la  columna telefono
+    modeloU.addColumn("Departamento");//al modelo  pre instanciado se le agrega la  columna departamento
     
-    ArrayList<administrador> lista =  con.obtenerUsuarios();
-    int numeroUsuarios = lista.size();
-    modeloU.setNumRows(numeroUsuarios);
+    ArrayList<administrador> lista =  con.obtenerUsuarios();//se instancia una lista con todos los datos del metodo obtenerUsuario de la conexion
+    int numeroUsuarios = lista.size(); //se cuentan los caracteres de la la lista 
+    modeloU.setNumRows(numeroUsuarios); //se definen el numero de filas  del conteo anterior
     
-    for(int i = 0;i < numeroUsuarios;i++){
-    administrador ad = lista.get(i);
-    String nombre = ad.getNombre();
-    String apellido = ad.getApellido();
-    String telefono = ad.getTelefono();
-    String Departamento = ad.getDepartamento();
+    for(int i = 0;i < numeroUsuarios;i++){ //se crea un for 
+    administrador ad = lista.get(i); //se obtiene la posicion uno o cero la que primero este de la clase administrador
+    String nombre = ad.getNombre(); //se obtiene el nombre 
+    String apellido = ad.getApellido(); //se obtiene el apellido
+    String telefono = ad.getTelefono(); //se obtiene  el telefono
+    String Departamento = ad.getDepartamento(); //y se obtiene el departaamento al que pertenece
     
-    modeloU.setValueAt(nombre,i,0);
-      modeloU.setValueAt(apellido,i,1);
-        modeloU.setValueAt(telefono,i,2);
-          modeloU.setValueAt(Departamento,i,3);
+    modeloU.setValueAt(nombre,i,0); //se inserta el valor nombre en la posicion 0
+      modeloU.setValueAt(apellido,i,1); //se inserta el valor apellido en la posicion 1
+        modeloU.setValueAt(telefono,i,2); //se inserta el valor telefono en la posicion 2
+          modeloU.setValueAt(Departamento,i,3); //se inserta el valor departamento en la posicion 3
     }
     
     }
@@ -92,15 +92,17 @@ conexion con = new conexion();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuario = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnDel = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        btnMod = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnDelU = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAdmin = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
+        btnAddU = new javax.swing.JButton();
+        btnModU = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -108,16 +110,23 @@ conexion con = new conexion();
         tblUsuario.setModel(modeloU);
         jScrollPane1.setViewportView(tblUsuario);
 
-        jButton3.setText("Eliminar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnDel.setText("Eliminar");
+        btnDel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnDelActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Agregar");
+        btnAdd.setText("Agregar");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
-        jButton5.setText("jButton5");
+        jButton5.setText("Cerrar");
+
+        btnMod.setText("Modificar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -127,16 +136,17 @@ conexion con = new conexion();
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
-                            .addComponent(jButton4))
-                        .addContainerGap(201, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton5)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnMod, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(185, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,54 +158,71 @@ conexion con = new conexion();
                             .addGap(31, 31, 31)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(76, 76, 76)
-                            .addComponent(jButton3)
-                            .addGap(137, 137, 137)
-                            .addComponent(jButton4))))
+                            .addGap(86, 86, 86)
+                            .addComponent(btnAdd)
+                            .addGap(42, 42, 42)
+                            .addComponent(btnMod)
+                            .addGap(43, 43, 43)
+                            .addComponent(btnDel))))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Empleados", jPanel1);
 
-        jButton1.setText("Eliminar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnDelU.setText("Eliminar");
+        btnDelU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnDelUActionPerformed(evt);
             }
         });
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Cerrar");
 
         tblAdmin.setModel(modeloD);
         jScrollPane2.setViewportView(tblAdmin);
 
-        jButton6.setText("Agregar");
+        btnAddU.setText("Agregar");
+        btnAddU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddUActionPerformed(evt);
+            }
+        });
+
+        btnModU.setText("Modificar");
+        btnModU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModUActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(32, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(273, 273, 273)
                         .addComponent(jButton2))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton6)
-                            .addComponent(jButton1))))
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnDelU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnModU, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAddU, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jButton1)
-                .addGap(93, 93, 93)
-                .addComponent(jButton6)
+                .addGap(131, 131, 131)
+                .addComponent(btnAddU)
+                .addGap(43, 43, 43)
+                .addComponent(btnModU)
+                .addGap(28, 28, 28)
+                .addComponent(btnDelU)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addGap(21, 21, 21))
@@ -240,7 +267,7 @@ conexion con = new conexion();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnDelUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelUActionPerformed
        int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
        
        if(mensaje == 0){
@@ -249,9 +276,9 @@ conexion con = new conexion();
        con.borrarAdministrador(nombre);
        modeloD.removeRow(this.tblAdmin.getSelectedRow());
        }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnDelUActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
 int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
        
        if(mensaje == 0){
@@ -261,7 +288,32 @@ int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este
        modeloD.removeRow(this.tblUsuario.getSelectedRow());
       
        }        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnDelActionPerformed
+
+    private void btnAddUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUActionPerformed
+        new ingresarAdmin().setVisible(true);
+    }//GEN-LAST:event_btnAddUActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        new ingresarEmp().setVisible(true);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnModUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModUActionPerformed
+  int index = this.tblAdmin.getSelectedRow();
+  
+  
+if(index == -1){
+    
+    JOptionPane.showMessageDialog(null, "No hay datos para modificar.\n"
+            + "Por favor, seleccione un registro de la tabla.", "Error en la operación",
+            JOptionPane.ERROR_MESSAGE);
+
+}else{
+    
+    new fModificarAdmin(index).setVisible(true);
+    
+} 
+    }//GEN-LAST:event_btnModUActionPerformed
 
     /**
      * @param args the command line arguments
@@ -293,18 +345,20 @@ int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new fAdmin().setVisible(false);
+                new fAdmin().setVisible(true); //se define el frame en escondido para que no se vea
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAddU;
+    private javax.swing.JButton btnDel;
+    private javax.swing.JButton btnDelU;
+    private javax.swing.JButton btnMod;
+    private javax.swing.JButton btnModU;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

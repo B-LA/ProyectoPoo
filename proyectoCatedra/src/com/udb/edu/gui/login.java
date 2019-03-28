@@ -114,13 +114,14 @@ principal p = new principal();
     try {
        boolean n =  p.validarExistenciaUsuario(nombre, contra);
         if(n == true){
-            
-            if(p.getUsuario() == "super"){
-            this.dispose();
-            new fAdmin().setVisible(true);
+            String valorUS = p.getUsuario() ;
+            System.out.println("El usuarios es"+valorUS);
+            if("super".equals(valorUS)){
+                this.dispose();
+                new fAdmin().setVisible(true);
             }else{
-        this.dispose();
-         new fPrincipal(true).setVisible(true);
+                this.dispose();
+                new fPrincipal(true).setVisible(true);
             }
             
         }else{
