@@ -112,10 +112,17 @@ principal p = new principal();
       char[] Contra = this.txtContra.getPassword();
      String contra = new String(Contra);
     try {
-       boolean n =  p.validarFrame(nombre, contra);
+       boolean n =  p.validarExistenciaUsuario(nombre, contra);
         if(n == true){
+            
+            if(p.getUsuario() == "super"){
+            this.dispose();
+            new fAdmin().setVisible(true);
+            }else{
         this.dispose();
          new fPrincipal(true).setVisible(true);
+            }
+            
         }else{
         JOptionPane.showMessageDialog(null,"El usuario no existe");
         }

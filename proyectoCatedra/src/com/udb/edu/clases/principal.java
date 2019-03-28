@@ -2,17 +2,42 @@
 package com.udb.edu.clases;
 import com.udb.edu.conexion.*;
 import java.sql.SQLException;
-import java.sql.Statement;
+
 
 /**
  *
  * @author neon
  */
 public class principal {
-conexion n = new conexion();
+conexion n;
     
  private String nombre;
  private String contra;
+private String usuario;
+
+
+ public boolean validarExistenciaUsuario(String nombre,String contra) throws SQLException{
+         this.nombre = nombre;
+         this.contra = contra;
+       boolean valorN =   n.obtenerUsuario(nombre, contra);
+       if(valorN == true){
+       return true;
+       }else
+    return false;
+    }
+ 
+ 
+    public void validarTipoDeUsuario(String usuario){
+    
+   if(usuario.equals("super")){
+ setUsuario(usuario);   
+   }else
+setUsuario(usuario);
+    }
+
+    public principal() {
+        this.n = new conexion();
+    }
 
     public String getNombre() {
         return nombre;
@@ -29,15 +54,19 @@ conexion n = new conexion();
     public void setContra(String contra) {
         this.contra = contra;
     }
- 
-    public boolean validarFrame(String nombre,String contra) throws SQLException{
-         this.nombre = nombre;
-         this.contra = contra;
-       boolean valorN =   n.obtenerUsuario(nombre, contra);
-       if(valorN == true){
-       return true;
-       }else
-    return false;
+    
+       public String getUsuario() {
+        return usuario;
     }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+   
+    
+
+
+ 
     
 }

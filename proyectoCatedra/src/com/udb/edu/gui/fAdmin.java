@@ -293,7 +293,7 @@ int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new fAdmin().setVisible(true);
+                new fAdmin().setVisible(false);
             }
         });
     }

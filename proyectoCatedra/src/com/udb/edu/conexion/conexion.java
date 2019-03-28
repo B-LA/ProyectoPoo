@@ -9,12 +9,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import com.udb.edu.clases.administrador;
+import com.udb.edu.clases.ingresarTrabajadores;
+import com.udb.edu.clases.principal;
 import com.udb.edu.clases.usuariosAdmin;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class conexion {
 
 
-    
  String based = "Proyecto_Catedra2019";
  String url = "jdbc:mysql://localhost:3306/Proyecto_Catedra2019";
  String user = "root";
@@ -23,8 +26,8 @@ public class conexion {
  PreparedStatement prepSt = null;
  Statement st = null;
  ResultSet rs = null;
-      String valorU ;
-     String valorD;
+ String valorU ;
+ String valorD;
  
     public conexion(){
         try {
@@ -37,7 +40,7 @@ public class conexion {
     
 public boolean obtenerUsuario(String usuario,String contra) throws SQLException {
 
-   
+    principal p = new principal(); 
          conn = DriverManager.getConnection(this.url, this.user, this.pass);
            String sql = "select * from agregar_usuarios where nombre_usuario = ?  and contrasena_usuario = ?";
           prepSt = conn.prepareStatement(sql);
@@ -49,12 +52,20 @@ public boolean obtenerUsuario(String usuario,String contra) throws SQLException 
           valorU = rs.getString(2);
          valorD = rs.getString(3);
          if(valorU.equals(usuario) && valorD.equals(contra)){
+          if(valorU.equals("super") && valorD.equals("super") ){
+         p.validarTipoDeUsuario("super");
+         }else{
+          
+          p.validarTipoDeUsuario(usuario);
+          }
          return true;
          }
+         
           }
      
      return false;   
 } // fin metodo usuario
+
 
 
 
@@ -131,7 +142,7 @@ public ArrayList<administrador> obtenerUsuarios(){
             }
         }
        return listaAdministradores;
-    }
+    } //fin de este metodo
     
 
 public void borrarUsuario(String usuario){
@@ -158,7 +169,7 @@ public void borrarUsuario(String usuario){
                 ex.printStackTrace();
             }
         }
-    }
+    }//fin de este metodo
 
 public void borrarAdministrador(String usuario){
         try {
@@ -184,6 +195,31 @@ public void borrarAdministrador(String usuario){
                 ex.printStackTrace();
             }
         }
-    }
+    }//fin de este metodo
+
+public void insertarTrabajadores(int index,int indexD,String nombre, String apellido,double telefono,String departamento){
+
+     try {
+         System.out.println("el valor index es :" + index);
+         conn = DriverManager.getConnection(this.url, this.user, this.pass);
+         String sql = "INSERT INTO empleados (cod_emp,cod_cargo,cod_depar,nombre,apellidos,telefono,departamento) VALUES (?,?,?,?,?,?,?)";
+         prepSt = conn.prepareStatement(sql);
+         prepSt.setInt(1,index);
+         prepSt.setInt(2,index);
+         prepSt.setInt(3,indexD);
+         prepSt.setString(4,nombre);
+         prepSt.setString(5,apellido);
+         prepSt.setDouble(6,telefono);
+         prepSt.setString(7,departamento);
+         
+         prepSt.executeUpdate();
+         
+     } catch (SQLException ex) {
+         Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
+     }
+            
+            
+
+}
 
 }// fin clase principal
