@@ -13,6 +13,7 @@ private String usuario;
 private String contra;
 
 
+
     public String getUsuario() {
         return usuario;
     }

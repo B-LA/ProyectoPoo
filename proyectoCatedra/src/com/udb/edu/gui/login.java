@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-
+import com.udb.edu.clases.validarUsuarios;
 /**
  *
  * @author neon
@@ -121,7 +121,7 @@ principal p = new principal();
                 new fAdmin().setVisible(true);
             }else{
                 this.dispose();
-                new fPrincipal(true).setVisible(true);
+                new fPrincipal().setVisible(true);
             }
             
         }else{

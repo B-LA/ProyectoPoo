@@ -5,7 +5,13 @@
  */
 package com.udb.edu.gui;
 
+import com.udb.edu.clases.obtenerCaso;
+import com.udb.edu.clases.validarCaso;
+import com.udb.edu.clases.validarUsuarios;
+import com.udb.edu.conexion.conexion;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -13,17 +19,45 @@ import javax.swing.JOptionPane;
  * @author neon
  */
 public class fPrincipal extends javax.swing.JFrame {
-
+    
+conexion conn = new conexion();
+    DefaultTableModel modeloCasos = new DefaultTableModel();
+validarUsuarios v = new validarUsuarios();
     /**
      * Creates new form fPrincipal
      */
-    public fPrincipal(boolean valor) {
-        boolean valorA = valor;
+    public fPrincipal() {
         initComponents();
-        esconderTBN(valorA);
+      insertarCasosTabla();
     }
  
-        private void esconderTBN(boolean valor){
+        private void insertarCasosTabla(){
+        modeloCasos.addColumn("Nombre");
+        modeloCasos.addColumn("Apellido");
+        modeloCasos.addColumn("Descripcion");
+        modeloCasos.addColumn("Estado");
+        
+         ArrayList<obtenerCaso> deleT =  conn.obtenerCasos();
+    int numeroCasos = deleT.size();
+    modeloCasos.setNumRows(numeroCasos);
+    
+    for(int i = 0;i<numeroCasos;i++){
+   obtenerCaso ad = deleT.get(i);
+   String nombre = ad.getNombre();
+   String apellido = ad.getApellido();
+   String descipcion = ad.getDescripcion();
+   String estado = ad.getEstadoCaso();
+   
+  modeloCasos.setValueAt(nombre, i,0);
+   modeloCasos.setValueAt(apellido, i,1);
+   modeloCasos.setValueAt(descipcion, i,2);
+   modeloCasos.setValueAt(estado,i,3);
+ 
+        
+        }
+        }
+    
+        //private void esconderTBN(){
             /*if("admin".equals(valor)){
                 
             }else
@@ -35,8 +69,15 @@ public class fPrincipal extends javax.swing.JFrame {
     this.tbnT.setEnabledAt(this.tbnT.getTabCount() - 1, false);
             }else{
             }*/
-        }
+       // }
  
+ private void insertarCaso(){
+ String nombreCaso = this.txU.getText();
+ String descipcionCaso = this.txtDtos.getText();
+ new validarCaso(nombreCaso,descipcionCaso);
+
+ }
+        
    
    /**
      * This method is called from within the constructor to initialize the form.
@@ -61,10 +102,8 @@ public class fPrincipal extends javax.swing.JFrame {
         jProgressBar1 = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbCasos = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -164,24 +203,10 @@ public class fPrincipal extends javax.swing.JFrame {
 
         tbnT.addTab("Segundo", jPanel2);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        tbCasos.setModel(modeloCasos);
+        jScrollPane2.setViewportView(tbCasos);
 
         jButton2.setText("Revisar");
-
-        jButton3.setText("Aprobar");
-
-        jButton5.setText("Rechasar");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -191,11 +216,8 @@ public class fPrincipal extends javax.swing.JFrame {
                 .addGap(106, 106, 106)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton5))
-                .addContainerGap(332, Short.MAX_VALUE))
+                .addComponent(jButton2)
+                .addContainerGap(339, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,12 +228,8 @@ public class fPrincipal extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
-                        .addComponent(jButton2)
-                        .addGap(53, 53, 53)
-                        .addComponent(jButton3)
-                        .addGap(62, 62, 62)
-                        .addComponent(jButton5)))
-                .addContainerGap(64, Short.MAX_VALUE))
+                        .addComponent(jButton2)))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         tbnT.addTab("Tercero", jPanel3);
@@ -284,7 +302,7 @@ public class fPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new fPrincipal(true).setVisible(false);
+                new fPrincipal().setVisible(true);
             }
         });
     }
@@ -293,9 +311,7 @@ public class fPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnTLT;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
@@ -304,9 +320,10 @@ public class fPrincipal extends javax.swing.JFrame {
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbCasos;
     private javax.swing.JTabbedPane tbnT;
     private javax.swing.JTextField txU;
     private javax.swing.JTextArea txtDtos;
     // End of variables declaration//GEN-END:variables
 }
+

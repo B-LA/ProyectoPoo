@@ -9,8 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import com.udb.edu.clases.administrador;
 import com.udb.edu.clases.modificarAdmin;
+import com.udb.edu.clases.obtenerCaso;
 import com.udb.edu.clases.principal;
 import com.udb.edu.clases.usuariosAdmin;
+import com.udb.edu.clases.validarCaso;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -19,7 +21,7 @@ public class conexion {
 
 
  String based = "Proyecto_Catedra2019"; //nombre de la base de datos
- String url = "jdbc:mysql://localhost:3306/Proyecto_Catedra2019"; //la URl donde esta ubicada la base de datos
+ String url = "jdbc:mysql://localhost:3306/Proyecto_Catedra"; //la URl donde esta ubicada la base de datos
  String user = "root"; //usuario
  String pass = ""; //password
  Connection conn = null; //Definimos un objeto connection en null
@@ -35,6 +37,19 @@ public class conexion {
             ex.printStackTrace(); //nuestra la exepcion
         }
     }//fin constructor
+    
+    public void agregarCaso(validarCaso v){
+    
+     try {
+         conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+         String sql = "Insert into solicitud_casos values(?,?,?,?,?,?,?,?,?)";
+         
+         
+     } catch (SQLException ex) {
+         Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
+     }
+    
+    }// fin del metodo agregar caso
     
     
 public boolean obtenerUsuario(String usuario,String contra) throws SQLException {// se define el metodo de para obtener los usuarios
@@ -148,7 +163,7 @@ public void borrarUsuario(String usuario){
             
               conn = DriverManager.getConnection(this.url, this.user, this.pass);
             
-            String sql = "DELETE FROM empleado WHERE nombre=?";
+            String sql = "DELETE FROM empleados WHERE nombre=?";
             
             prepSt = conn.prepareStatement(sql);
             
@@ -259,6 +274,69 @@ public void insertarAdministradores(String nomUs,String contra , int cargo,int c
          Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
      }
       
-   }    
+   }   
+  
+  
+    public void modificarTrabajador(administrador ad,int index){
+   
+      try {
+         
+         conn = DriverManager.getConnection(this.url, this.user, this.pass);
+         String sql = "UPDATE empleados SET nombre=?, apellidos=? , telefono=? WHERE cod_jefatura=?";
+         prepSt = conn.prepareStatement(sql);
+         prepSt.setString(1,ad.getNombre());
+         prepSt.setString(2,ad.getApellido());
+         prepSt.setString(3,ad.getTelefono());
+         prepSt.setInt(4,index);
+         
+         prepSt.executeUpdate();
+         
+     } catch (SQLException ex) {
+         Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
+     }
+      
+   } 
+  
+  public ArrayList<obtenerCaso> obtenerCasos(){ //se define el metodo obtener usuarios como una lista
+        
+        ArrayList<obtenerCaso> listaAdministradores = new ArrayList<obtenerCaso>(); //se instancia la lista del tipo objeto usuariosAdmin como vacio
+       try {
+            
+            conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+            
+            String sql = "SELECT * FROM solicitud_casos order by nombre"; //se define la consulta sql
+            
+            prepSt = conn.prepareStatement(sql); //se ejecuta la consulta
+            
+            rs = prepSt.executeQuery(); //se ejecuta la consulta
+            
+            while(rs.next()){ //se recorren los valores obtenidos de la consulta
+             
+                String nombre = rs.getString("nombre");
+               String apellido = rs.getString("apellidos");
+               String Descripcion = rs.getString("descripcion");
+               String  estado  = rs.getString("estado_caso");
+               
+                obtenerCaso uA = new obtenerCaso(nombre,apellido,Descripcion,estado);
+                listaAdministradores.add(uA);
+            }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        finally{
+            try {
+                prepSt.close();
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+       return listaAdministradores;
+    } //fin de este metodo
+    
+  
+  
+  
 
 }// fin clase principal

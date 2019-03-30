@@ -127,6 +127,11 @@ conexion con = new conexion();
         jButton5.setText("Cerrar");
 
         btnMod.setText("Modificar");
+        btnMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -284,8 +289,8 @@ int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este
        if(mensaje == 0){
              int fila = tblUsuario.getSelectedRow();
            String nombre = tblUsuario.getValueAt(fila, 0).toString();
-       con.borrarAdministrador(nombre);
-       modeloD.removeRow(this.tblUsuario.getSelectedRow());
+       con.borrarUsuario(nombre);
+       modeloU.removeRow(this.tblUsuario.getSelectedRow());
       
        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnDelActionPerformed
@@ -314,6 +319,23 @@ if(index == -1){
     
 } 
     }//GEN-LAST:event_btnModUActionPerformed
+
+    private void btnModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModActionPerformed
+         int index = this.tblUsuario.getSelectedRow();
+  
+  
+if(index == -1){
+    
+    JOptionPane.showMessageDialog(null, "No hay datos para modificar.\n"
+            + "Por favor, seleccione un registro de la tabla.", "Error en la operación",
+            JOptionPane.ERROR_MESSAGE);
+
+}else{
+    
+    new fModificarTrabajador(index).setVisible(true);
+    
+} 
+    }//GEN-LAST:event_btnModActionPerformed
 
     /**
      * @param args the command line arguments
