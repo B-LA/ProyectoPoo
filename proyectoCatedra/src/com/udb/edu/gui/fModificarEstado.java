@@ -5,6 +5,10 @@
  */
 package com.udb.edu.gui;
 
+import com.udb.edu.clases.administrador;
+import com.udb.edu.clases.obtenerCaso;
+import com.udb.edu.conexion.conexion;
+import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
@@ -13,18 +17,40 @@ import javax.swing.DefaultComboBoxModel;
  * @author neon
  */
 public class fModificarEstado extends javax.swing.JFrame {
-ComboBoxModel m = new DefaultComboBoxModel(new String[] 
+conexion con = new conexion();
+    ComboBoxModel m = new DefaultComboBoxModel(new String[] 
 { "Incompleto", "Completo", "Aceptado", "Rechasado" });
+ int index2;
     /**
      * Creates new form fModificarEstado
      */
-    public fModificarEstado() {
+    public fModificarEstado(int index) {
         initComponents();
-        
-        
+         insertarDatos(index);
     }
     
+   private void insertarDatos(int index){
+   ArrayList<obtenerCaso> dtos = con.obtenerCasos(); 
+    obtenerCaso ad = dtos.get(index);
+    
+    String titulo = ad.getNombre();
+    String descripcion = ad.getDescripcion();
    
+       System.out.println("Titulo" + titulo + "Descripcion" + descripcion);
+    
+   this.lblTitulo.setText(titulo);
+   this.lblDes.setText(descripcion);
+   
+int index2 = index;
+       this.index2 = index2;   
+   }
+   
+   
+
+
+ public int devolverDatos(){
+        return this.index2;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,6 +92,11 @@ ComboBoxModel m = new DefaultComboBoxModel(new String[]
         jLabel5.setText("Estado");
 
         jButton1.setText("Aceptar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
 
@@ -127,6 +158,30 @@ ComboBoxModel m = new DefaultComboBoxModel(new String[]
         
     }//GEN-LAST:event_cmbEstadoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      /*ArrayList<administrador> deleT =  con.obtenerUsuarios();  
+        String nombre = this.txtNom.getText();
+        String apellido = this.txtAp.getText();
+         String tel =  this.txtTel.getText();
+         int index = devolverDatos();
+         administrador adU =  deleT.get(index); ;
+         String adO = adU.getDepartamento();
+         administrador ad = new administrador(nombre,apellido,tel,adO);
+         
+         con.modificarTrabajador(ad,index);
+         
+   this.dispose();*/
+      ArrayList<obtenerCaso> dtos = con.obtenerCasos(); 
+      String estado = this.cmbEstado.getSelectedItem().toString();
+      obtenerCaso adU =  dtos.get(index2); 
+      String nombre = adU.getNombre();
+      String observaciones = this.txtOb.getText();
+      
+      con.modificarEstado(estado,nombre);
+      
+      this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -157,7 +212,7 @@ ComboBoxModel m = new DefaultComboBoxModel(new String[]
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new fModificarEstado().setVisible(true);
+                new fModificarEstado(0).setVisible(true);
             }
         });
     }

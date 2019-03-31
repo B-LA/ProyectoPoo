@@ -19,6 +19,10 @@ this.descripcion = Descripcion;
 this.estadoCaso = estado;
 }
 
+public  obtenerCaso(String estado){
+this.estadoCaso = estado;
+}
+
     public String getEstadoCaso() {
         return estadoCaso;
     }

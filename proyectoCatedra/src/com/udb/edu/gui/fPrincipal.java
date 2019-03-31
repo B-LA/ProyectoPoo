@@ -25,14 +25,18 @@ public class fPrincipal extends javax.swing.JFrame {
     
 conexion conn = new conexion();
     DefaultTableModel modeloCasos = new DefaultTableModel();
-validarUsuarios v = new validarUsuarios();
+
     /**
      * Creates new form fPrincipal
+     * @param usuario
+     * @throws java.sql.SQLException
      */
+
     public fPrincipal(String usuario) throws SQLException {
+        
         initComponents();
+        esconderTBN(usuario);  
       insertarCasosTabla();
-      esconderTBN(usuario);
     }
  
         private void insertarCasosTabla(){
@@ -42,55 +46,61 @@ validarUsuarios v = new validarUsuarios();
         modeloCasos.addColumn("Estado");
         
          ArrayList<obtenerCaso> deleT =  conn.obtenerCasos();
-    int numeroCasos = deleT.size();
-    modeloCasos.setNumRows(numeroCasos);
+        int numeroCasos = deleT.size();
+        modeloCasos.setNumRows(numeroCasos);
     
-    for(int i = 0;i<numeroCasos;i++){
-   obtenerCaso ad = deleT.get(i);
-   String nombre = ad.getNombre();
-   String apellido = ad.getApellido();
-   String descipcion = ad.getDescripcion();
-   String estado = ad.getEstadoCaso();
+        for(int i = 0;i<numeroCasos;i++){
+        obtenerCaso ad = deleT.get(i);
+        String nombre = ad.getNombre();
+        String apellido = ad.getApellido();
+        String descipcion = ad.getDescripcion();
+        String estado = ad.getEstadoCaso();
    
-  modeloCasos.setValueAt(nombre, i,0);
-   modeloCasos.setValueAt(apellido, i,1);
-   modeloCasos.setValueAt(descipcion, i,2);
-   modeloCasos.setValueAt(estado,i,3);
+        modeloCasos.setValueAt(nombre, i,0);
+        modeloCasos.setValueAt(apellido, i,1);
+        modeloCasos.setValueAt(descipcion, i,2);
+        modeloCasos.setValueAt(estado,i,3);
  
         
         }
         }
+        
+       
     
        private void esconderTBN(String usuario) throws SQLException{
-
-           validarUsuarios n =  new validarUsuarios();
+                validarUsuarios v = new validarUsuarios();
+           
+              boolean tieneAvC =  v.falsoOverdadero();
+              System.out.println("Tiene caso " + tieneAvC);
+             
+              if(usuario == "admin"){
           
-              boolean tieneAvC =  conn.validarCaso(n.getCodigo());
-              System.out.println("Valor"+tieneAvC);
+          this.tbnT.remove(1);
+          this.tbnT.remove(0);
+          }else
               if(tieneAvC){
-               
-                  
+                  //mostrarEstado(n.getCodigo());
+                  mostrarEstado(v.getCodigo());
                   this.tbnT.remove(2);
                   this.tbnT.remove(0);
                  
-              }
-             
-
+              }else
           if(tieneAvC == false){
               this.tbnT.remove(2);
                 this.tbnT.setEnabledAt(this.tbnT.getTabCount() - 1, false); 
-            }else{
-                
             }
            
         }
- 
- private void insertarCaso(){
- String nombreCaso = this.txU.getText();
- String descipcionCaso = this.txtDtos.getText();
- new validarCaso(nombreCaso,descipcionCaso);
 
- }
+private void mostrarEstado(String codigo) throws SQLException{
+ validarUsuarios n =  new validarUsuarios();
+   
+    ArrayList<obtenerCaso> deleT =  conn.insertarCaso(codigo);
+obtenerCaso ob = deleT.get(0);
+String Estado = ob.getEstadoCaso();
+
+    System.out.println("El estado es: "+ Estado);
+}
         
    
    /**
@@ -114,12 +124,23 @@ validarUsuarios v = new validarUsuarios();
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lblEst = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbCasos = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        btnRev = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txUActionPerformed(evt);
+            }
+        });
 
         btnTLT.setText("Submit");
         btnTLT.addActionListener(new java.awt.event.ActionListener() {
@@ -174,7 +195,7 @@ validarUsuarios v = new validarUsuarios();
                 .addContainerGap())
         );
 
-        tbnT.addTab("Inicio", jPanel1);
+        tbnT.addTab("Casos", jPanel1);
 
         jButton4.setText("Cerrar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -184,6 +205,16 @@ validarUsuarios v = new validarUsuarios();
         });
 
         jLabel1.setText("Usuario su proyecto esta en  proceso de revicion");
+
+        jLabel2.setText("Avance");
+
+        jLabel3.setText("Estado");
+
+        jLabel5.setText("Observaciones");
+
+        jLabel6.setText("OB");
+
+        lblEst.setText("EST");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -199,8 +230,18 @@ validarUsuarios v = new validarUsuarios();
                         .addGap(117, 117, 117)
                         .addComponent(jLabel1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(175, 175, 175)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(205, 205, 205)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(263, 263, 263)
+                                .addComponent(jLabel5))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblEst)
+                                .addGap(272, 272, 272)
+                                .addComponent(jLabel6)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -208,19 +249,34 @@ validarUsuarios v = new validarUsuarios();
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(84, 84, 84)
                 .addComponent(jLabel1)
-                .addGap(94, 94, 94)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 289, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(lblEst))
+                .addGap(42, 42, 42)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addGap(24, 24, 24))
         );
 
-        tbnT.addTab("Segundo", jPanel2);
+        tbnT.addTab("Estado", jPanel2);
 
         tbCasos.setModel(modeloCasos);
         jScrollPane2.setViewportView(tbCasos);
 
-        jButton2.setText("Revisar");
+        btnRev.setText("Revisar");
+        btnRev.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRevActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -230,7 +286,7 @@ validarUsuarios v = new validarUsuarios();
                 .addGap(106, 106, 106)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                .addComponent(btnRev)
                 .addContainerGap(339, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -242,11 +298,11 @@ validarUsuarios v = new validarUsuarios();
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
-                        .addComponent(jButton2)))
+                        .addComponent(btnRev)))
                 .addContainerGap(85, Short.MAX_VALUE))
         );
 
-        tbnT.addTab("Tercero", jPanel3);
+        tbnT.addTab("Mod", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -285,6 +341,29 @@ validarUsuarios v = new validarUsuarios();
         this.tbnT.setSelectedIndex(1);
         this.tbnT.remove(0);
     }//GEN-LAST:event_btnTLTActionPerformed
+
+    private void btnRevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevActionPerformed
+       int index = this.tbCasos.getSelectedRow();
+
+        if(index == -1){
+
+            JOptionPane.showMessageDialog(null, "No hay datos para modificar.\n"
+                + "Por favor, seleccione un registro de la tabla.", "Error en la operación",
+                JOptionPane.ERROR_MESSAGE);
+
+        }else{
+
+            new fModificarEstado(index).setVisible(true);
+
+        }
+        
+        
+    }//GEN-LAST:event_btnRevActionPerformed
+
+    private void txUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txUActionPerformed
+    
+    
+    }//GEN-LAST:event_txUActionPerformed
 
     /**
      * @param args the command line arguments
@@ -326,18 +405,23 @@ validarUsuarios v = new validarUsuarios();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRev;
     private javax.swing.JButton btnTLT;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblEst;
     private javax.swing.JTable tbCasos;
     private javax.swing.JTabbedPane tbnT;
     private javax.swing.JTextField txU;

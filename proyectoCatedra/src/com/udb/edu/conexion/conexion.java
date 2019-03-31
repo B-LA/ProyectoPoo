@@ -56,21 +56,49 @@ public class conexion {
     
     
   public boolean validarCaso(String codigo) throws SQLException{
+      validarUsuarios v = new validarUsuarios();
   conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
       String slq  = "select * from solicitud_casos where cod_solicitud=?";
       prepSt = conn.prepareStatement(slq);
       prepSt.setString(1,codigo);
       
       rs = prepSt.executeQuery();
-      
-      if(rs !=null){
-          return true;
-    }else
      
+      while(rs.next()){
+      String valorU = rs.getString("cod_solicitud");
+      if(valorU == codigo){    
+          return true;
+      }
+      }
+      
      return false;
+     
       }
      
-
+ public ArrayList<obtenerCaso> insertarCaso(String codigo) throws SQLException{
+    
+  
+        ArrayList<obtenerCaso> listaUsuarios = new ArrayList<obtenerCaso>(); //se instancia el array  vacio
+       
+            
+            conn = DriverManager.getConnection(this.url, this.user, this.pass);  //se instancia la conexion
+            
+            String sql = "SELECT * FROM solicitud_casos where cod_solicitud = ?"; //se define la consulta sql
+            
+            prepSt = conn.prepareStatement(sql); //se  prepara  la consulta pre definida
+            prepSt.setString(1,codigo);
+            rs = prepSt.executeQuery();  //se ejecuta la consulta
+            
+            while(rs.next()){ //se recorren los valores obtenidos de la consulta
+             
+                String estado = rs.getString("estado_caso"); //se obtiene el nombre de la base de datos
+              
+                
+                obtenerCaso ad = new obtenerCaso(estado); //se instancia la clase administrador y se le envian los parametros respectivos
+                listaUsuarios.add(ad);//se agregan a el array
+            }
+    return listaUsuarios;
+    }
   
   
   public boolean obtenerCodigoCaso(String usuario,String contra) throws SQLException{
@@ -86,6 +114,9 @@ public class conexion {
           
    if(valorU != null){
         v.insertarCodigo(valorU);
+        validarCaso(valorU);
+        v.ValidarUsuarios(usuario, contra);
+        insertarCaso(valorU);
         return true;
    
    }else
@@ -109,7 +140,7 @@ public boolean obtenerAdministrador(String usuario,String contra) throws SQLExce
           valorU = rs.getString("nombre_usuario"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
          valorD = rs.getString("contrasena_usuario"); //se obtiene el valor de la tabla en la posicion ingresada 
          if(valorU.equals(usuario) && valorD.equals(contra)){ //evalua si los valores debueltos son iguales a los ingresado
-          
+           
          return true; //retorna verdadero si existe
          }
              }
@@ -375,7 +406,25 @@ public void insertarAdministradores(String nomUs,String contra , int cargo,int c
          Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
      }
       
-   } 
+   }
+    
+    public void modificarEstado(String estado,String nombre){
+  
+  
+  try{
+         
+         conn = DriverManager.getConnection(this.url, this.user, this.pass);
+         String sql = "UPDATE solicitud_casos SET estado_caso = ? where nombre = ?";
+         prepSt = conn.prepareStatement(sql);
+         prepSt.setString(1,estado);
+         prepSt.setString(2,nombre);
+         prepSt.executeUpdate();
+  
+  } catch (SQLException ex) {
+         Logger.getLogger(conexion.class.getName()).log(Level.SEVERE, null, ex);
+     }
+    }
+  
   
   public ArrayList<obtenerCaso> obtenerCasos(){ //se define el metodo obtener usuarios como una lista
         

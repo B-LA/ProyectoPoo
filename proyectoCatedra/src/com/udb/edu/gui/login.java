@@ -16,8 +16,9 @@ import com.udb.edu.conexion.conexion;
  */
 public class login extends javax.swing.JFrame {
 principal p = new principal();
-conexion c = new conexion();
+    conexion c = new conexion();
 validarUsuarios v = new validarUsuarios();
+
     /**
      * Creates new form login
      */
@@ -120,11 +121,12 @@ validarUsuarios v = new validarUsuarios();
        
         if(usuarioAdmin == true){
             this.dispose();
-             new fPrincipal("").setVisible(true);
+            String admon = "admin";
+             new fPrincipal(admon).setVisible(true);
         }else
             if(usuarioTester == true){
                 this.dispose();
-                 String usuario = v.getUsuario();
+                String usuario = v.getCodigo();
              new fPrincipal(usuario).setVisible(true);
             }else
             if(usuarioSuper == true){
