@@ -9,13 +9,15 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import com.udb.edu.clases.validarUsuarios;
+import com.udb.edu.conexion.conexion;
 /**
  *
  * @author neon
  */
 public class login extends javax.swing.JFrame {
 principal p = new principal();
+conexion c = new conexion();
+validarUsuarios v = new validarUsuarios();
     /**
      * Creates new form login
      */
@@ -112,21 +114,25 @@ principal p = new principal();
       char[] Contra = this.txtContra.getPassword();
      String contra = new String(Contra);
     try {
-       boolean n =  p.validarExistenciaUsuario(nombre, contra);
-        if(n == true){
-            String valorUS = p.getUsuario() ;
-            System.out.println("El usuarios es"+valorUS);
-            if("super".equals(valorUS)){
+       boolean usuarioAdmin =  p.validarExistenciaUsuario(nombre, contra);
+       boolean usuarioTester =  c.validarTester(nombre, contra);
+       boolean usuarioSuper = c.validarSuperUsuario(nombre, contra);
+       
+        if(usuarioAdmin == true){
+            this.dispose();
+             new fPrincipal("").setVisible(true);
+        }else
+            if(usuarioTester == true){
                 this.dispose();
-                new fAdmin().setVisible(true);
-            }else{
+                 String usuario = v.getUsuario();
+             new fPrincipal(usuario).setVisible(true);
+            }else
+            if(usuarioSuper == true){
                 this.dispose();
-                new fPrincipal().setVisible(true);
-            }
-            
-        }else{
+            new fAdmin().setVisible(true); //se define el frame en escondido para que no se vea
+            }else
         JOptionPane.showMessageDialog(null,"El usuario no existe");
-        }
+        
     } catch (SQLException ex) {
         Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
     }

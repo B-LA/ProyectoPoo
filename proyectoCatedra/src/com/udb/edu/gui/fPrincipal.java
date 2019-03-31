@@ -9,7 +9,10 @@ import com.udb.edu.clases.obtenerCaso;
 import com.udb.edu.clases.validarCaso;
 import com.udb.edu.clases.validarUsuarios;
 import com.udb.edu.conexion.conexion;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,9 +29,10 @@ validarUsuarios v = new validarUsuarios();
     /**
      * Creates new form fPrincipal
      */
-    public fPrincipal() {
+    public fPrincipal(String usuario) throws SQLException {
         initComponents();
       insertarCasosTabla();
+      esconderTBN(usuario);
     }
  
         private void insertarCasosTabla(){
@@ -57,19 +61,29 @@ validarUsuarios v = new validarUsuarios();
         }
         }
     
-        //private void esconderTBN(){
-            /*if("admin".equals(valor)){
-                
-            }else
-            if("usuario".equals(valor)){
+       private void esconderTBN(String usuario) throws SQLException{
 
-      // this.tbnT.setEnabledAt(3,false);
-    this.tbnT.remove(3);
-    this.tbnT.remove(2);
-    this.tbnT.setEnabledAt(this.tbnT.getTabCount() - 1, false);
+           validarUsuarios n =  new validarUsuarios();
+          
+              boolean tieneAvC =  conn.validarCaso(n.getCodigo());
+              System.out.println("Valor"+tieneAvC);
+              if(tieneAvC){
+               
+                  
+                  this.tbnT.remove(2);
+                  this.tbnT.remove(0);
+                 
+              }
+             
+
+          if(tieneAvC == false){
+              this.tbnT.remove(2);
+                this.tbnT.setEnabledAt(this.tbnT.getTabCount() - 1, false); 
             }else{
-            }*/
-       // }
+                
+            }
+           
+        }
  
  private void insertarCaso(){
  String nombreCaso = this.txU.getText();
@@ -151,11 +165,11 @@ validarUsuarios v = new validarUsuarios();
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addComponent(txU, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGap(72, 72, 72)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTLT)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -302,7 +316,11 @@ validarUsuarios v = new validarUsuarios();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new fPrincipal().setVisible(true);
+                try {
+                    new fPrincipal("").setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(fPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

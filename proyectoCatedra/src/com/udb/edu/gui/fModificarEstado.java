@@ -20,23 +20,11 @@ ComboBoxModel m = new DefaultComboBoxModel(new String[]
      */
     public fModificarEstado() {
         initComponents();
-        mostrarObservaciones();
+        
         
     }
     
-    private void mostrarObservaciones(){
-    
-        this.lblOb.setVisible(false);
-    this.txtOb.setVisible(false);
-        
-        int index = this.cmbEstado.getSelectedIndex();
-        if(index == 3){
-        this.lblOb.setVisible(true);
-           this.txtOb.setVisible(true);
-        
-        }
-    
-    }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -135,8 +123,8 @@ ComboBoxModel m = new DefaultComboBoxModel(new String[]
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstadoActionPerformed
-       this.setSize(311,617);
-        mostrarObservaciones();
+       
+        
     }//GEN-LAST:event_cmbEstadoActionPerformed
 
     /**

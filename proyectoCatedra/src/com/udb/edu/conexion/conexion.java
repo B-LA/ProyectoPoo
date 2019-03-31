@@ -13,6 +13,8 @@ import com.udb.edu.clases.obtenerCaso;
 import com.udb.edu.clases.principal;
 import com.udb.edu.clases.usuariosAdmin;
 import com.udb.edu.clases.validarCaso;
+import com.udb.edu.clases.validarSuperUsuario;
+import com.udb.edu.clases.validarUsuarios;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -50,36 +52,114 @@ public class conexion {
      }
     
     }// fin del metodo agregar caso
+  
     
     
-public boolean obtenerUsuario(String usuario,String contra) throws SQLException {// se define el metodo de para obtener los usuarios
+  public boolean validarCaso(String codigo) throws SQLException{
+  conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+      String slq  = "select * from solicitud_casos where cod_solicitud=?";
+      prepSt = conn.prepareStatement(slq);
+      prepSt.setString(1,codigo);
+      
+      rs = prepSt.executeQuery();
+      
+      if(rs !=null){
+          return true;
+    }else
+     
+     return false;
+      }
+     
+
+  
+  
+  public boolean obtenerCodigoCaso(String usuario,String contra) throws SQLException{
+   validarUsuarios v = new validarUsuarios();
+      conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+  String sql = "select * from usuarios_tester where nombre_usuario = ?  and apellido_usuario  = ?"; //se define la consulta sql
+   prepSt = conn.prepareStatement(sql); //se ejecuta la consulta sql
+            prepSt.setString(1,usuario); //se ingresa el valor usuario en la posicion uno 
+            prepSt.setString(2, contra); //se ingresa el valor contra en la posicion dos
+ 
+          valorU = rs.getString("cod_solicitud"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
+          System.out.println("Codigo"+valorU);
+          
+   if(valorU != null){
+        v.insertarCodigo(valorU);
+        return true;
+   
+   }else
+
+   return false;
+  }
+    
+  
+  
+public boolean obtenerAdministrador(String usuario,String contra) throws SQLException {// se define el metodo de para obtener los usuarios
 
     principal p = new principal();  //se instancia un objeto de la clase principal
+    validarUsuarios v = new validarUsuarios();
          conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
            String sql = "select * from agregar_usuarios where nombre_usuario = ?  and contrasena_usuario  = ?"; //se define la consulta sql
           prepSt = conn.prepareStatement(sql); //se ejecuta la consulta sql
-            
             prepSt.setString(1,usuario); //se ingresa el valor usuario en la posicion uno 
             prepSt.setString(2, contra); //se ingresa el valor contra en la posicion dos
           rs = prepSt.executeQuery(); //se ejecuta la consulta sql
              while(rs.next()){ //se recorre los valores del  result set
-          valorU = rs.getString(2); //se obtiene el valor de la tabla pero en la posicion que es ingresado
-         valorD = rs.getString(3); //se obtiene el valor de la tabla en la posicion ingresada 
-         if(valorU.equals(usuario) && valorD.equals(contra)){ //evalua si los valores debueltos son iguales a los ingresados
-          if(valorU.equals("super") && valorD.equals("super") ){ //evalua nuevamente pero estaves para saber si el usuario ingresado es el super usuario
-         p.validarTipoDeUsuario("super"); //se accede al metodo validar tipo de usuario y se le envia el parametro
-         }else{ //solo si el usario es diferente a; super usuario
+          valorU = rs.getString("nombre_usuario"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
+         valorD = rs.getString("contrasena_usuario"); //se obtiene el valor de la tabla en la posicion ingresada 
+         if(valorU.equals(usuario) && valorD.equals(contra)){ //evalua si los valores debueltos son iguales a los ingresado
           
-          p.validarTipoDeUsuario(usuario);//se accede al metodo validar tipo de usuario y se le envia el parametro
-          }
          return true; //retorna verdadero si existe
          }
-         
-          }
+             }
      return false;    //retorna  falso si el usuario no existe
 } // fin metodo usuario
 
+public boolean validarTester(String usuario,String contra) throws SQLException{
 
+   validarUsuarios v = new validarUsuarios();
+    conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+      String sql = "select * from usuarios_testers  where nombre_usuario = ?  and apellido_usuario  = ?"; //se define la consulta sql
+    prepSt = conn.prepareStatement(sql);
+    prepSt = conn.prepareStatement(sql); //se ejecuta la consulta sql
+            prepSt.setString(1,usuario); //se ingresa el valor usuario en la posicion uno 
+            prepSt.setString(2, contra); //se ingresa el valor contra en la posicion dos
+          rs = prepSt.executeQuery(); //se ejecuta la consulta sql
+             while(rs.next()){ //se recorre los valores del  result set
+          valorU = rs.getString("nombre_usuario"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
+         valorD = rs.getString("apellido_usuario"); //se obtiene el valor de la tabla en la posicion ingresada 
+         if(valorU.equals(usuario) && valorD.equals(contra)){ //evalua si los valores debueltos son iguales a los ingresado
+           boolean codigoCaso =  obtenerCodigoCaso(usuario,contra);
+             System.out.println("codigo" + codigoCaso);
+         }
+         return true; //retorna verdadero si existe
+         }
+
+     return false;    //retorna  falso si el usuario no existe
+   
+}
+
+public boolean validarSuperUsuario(String usuario,String contra) throws SQLException{
+
+   validarSuperUsuario su = new validarSuperUsuario();
+    conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+    String sql = "select * from super_usuario where nombre_susuario = ?  and contrasena  = ?"; //se define la consulta sql
+    prepSt = conn.prepareStatement(sql);
+    prepSt = conn.prepareStatement(sql); //se ejecuta la consulta sql
+            prepSt.setString(1,usuario); //se ingresa el valor usuario en la posicion uno 
+            prepSt.setString(2, contra); //se ingresa el valor contra en la posicion dos
+          rs = prepSt.executeQuery(); //se ejecuta la consulta sql
+             while(rs.next()){ //se recorre los valores del  result set
+          valorU = rs.getString("nombre_susuario"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
+         valorD = rs.getString("contrasena"); //se obtiene el valor de la tabla en la posicion ingresada 
+         if(valorU.equals(usuario) && valorD.equals(contra)){ //evalua si los valores debueltos son iguales a los ingresado
+         return true; //retorna verdadero si existe
+         }
+             }
+     return false;    //retorna  falso si el usuario no existe
+   
+}
 
 
 public ArrayList<administrador> obtenerUsuarios(){ //se define el metodo obtener usuarios pero como Lista
@@ -336,7 +416,7 @@ public void insertarAdministradores(String nomUs,String contra , int cargo,int c
     } //fin de este metodo
     
   
-  
+
   
 
 }// fin clase principal

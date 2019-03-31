@@ -1,5 +1,5 @@
 package com.udb.edu.clases;
-import com.udb.edu.conexion.*;
+import com.udb.edu.conexion.conexion;
 import java.sql.SQLException;
 
 
@@ -17,26 +17,18 @@ private String usuario;
     public principal() {
         this.n = new conexion();
     }
- public void validarTipoDeUsuario(String usuario){
-    
-   if(usuario.equals("super")){
- this.usuario = usuario;
-   }else
-this.usuario = usuario;
-    }
+
    
  
  public boolean validarExistenciaUsuario(String nombre,String contra) throws SQLException{
          this.nombre = nombre;
          this.contra = contra;
-       boolean valorN =   n.obtenerUsuario(nombre, contra);
-       if(valorN == true){
-            validarTipoDeUsuario(nombre);
-       return true;
-       }else{
-            validarTipoDeUsuario(nombre);
-    return false;
-    }
+       boolean valorN =   n.obtenerAdministrador(nombre, contra);
+ if(valorN == true){
+ 
+ return true;
+ }else
+     return false;
  }
  
     public String getNombre() {

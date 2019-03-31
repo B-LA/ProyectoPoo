@@ -25,9 +25,10 @@ conexion con = new conexion();
      * Creates new form fAdmin
      */
     public fAdmin() {
+     initComponents();
         mostrarEmpleados();
         mostrarAdministradores();
-        initComponents();
+    
     }
 
     private  void mostrarEmpleados(){
@@ -103,7 +104,6 @@ conexion con = new conexion();
         tblAdmin = new javax.swing.JTable();
         btnAddU = new javax.swing.JButton();
         btnModU = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,6 +125,11 @@ conexion con = new conexion();
         });
 
         jButton5.setText("Cerrar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         btnMod.setText("Modificar");
         btnMod.addActionListener(new java.awt.event.ActionListener() {
@@ -182,6 +187,11 @@ conexion con = new conexion();
         });
 
         jButton2.setText("Cerrar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         tblAdmin.setModel(modeloD);
         jScrollPane2.setViewportView(tblAdmin);
@@ -239,19 +249,6 @@ conexion con = new conexion();
 
         jTabbedPane1.addTab("Gefes", jPanel2);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 846, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 472, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Departamentos", jPanel3);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,70 +269,78 @@ conexion con = new conexion();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDelUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelUActionPerformed
-       int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
-       
-       if(mensaje == 0){
-         int fila = tblAdmin.getSelectedRow();
-           String nombre = tblAdmin.getValueAt(fila, 0).toString();
-       con.borrarAdministrador(nombre);
-       modeloD.removeRow(this.tblAdmin.getSelectedRow());
-       }
-    }//GEN-LAST:event_btnDelUActionPerformed
+    private void btnModUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModUActionPerformed
+        int index = this.tblAdmin.getSelectedRow();
 
-    private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
-int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
-       
-       if(mensaje == 0){
-             int fila = tblUsuario.getSelectedRow();
-           String nombre = tblUsuario.getValueAt(fila, 0).toString();
-       con.borrarUsuario(nombre);
-       modeloU.removeRow(this.tblUsuario.getSelectedRow());
-      
-       }        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDelActionPerformed
+        if(index == -1){
+
+            JOptionPane.showMessageDialog(null, "No hay datos para modificar.\n"
+                + "Por favor, seleccione un registro de la tabla.", "Error en la operación",
+                JOptionPane.ERROR_MESSAGE);
+
+        }else{
+
+            new fModificarAdmin(index).setVisible(true);
+
+        }
+    }//GEN-LAST:event_btnModUActionPerformed
 
     private void btnAddUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUActionPerformed
         new ingresarAdmin().setVisible(true);
     }//GEN-LAST:event_btnAddUActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+        new login().setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnDelUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelUActionPerformed
+        int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
+
+        if(mensaje == 0){
+            int fila = tblAdmin.getSelectedRow();
+            String nombre = tblAdmin.getValueAt(fila, 0).toString();
+            con.borrarAdministrador(nombre);
+            modeloD.removeRow(this.tblAdmin.getSelectedRow());
+        }
+    }//GEN-LAST:event_btnDelUActionPerformed
+
+    private void btnModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModActionPerformed
+        int index = this.tblUsuario.getSelectedRow();
+
+        if(index == -1){
+
+            JOptionPane.showMessageDialog(null, "No hay datos para modificar.\n"
+                + "Por favor, seleccione un registro de la tabla.", "Error en la operación",
+                JOptionPane.ERROR_MESSAGE);
+
+        }else{
+
+            new fModificarTrabajador(index).setVisible(true);
+
+        }
+    }//GEN-LAST:event_btnModActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        this.dispose();
+        new login().setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         new ingresarEmp().setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnModUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModUActionPerformed
-  int index = this.tblAdmin.getSelectedRow();
-  
-  
-if(index == -1){
-    
-    JOptionPane.showMessageDialog(null, "No hay datos para modificar.\n"
-            + "Por favor, seleccione un registro de la tabla.", "Error en la operación",
-            JOptionPane.ERROR_MESSAGE);
+    private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
+        int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
 
-}else{
-    
-    new fModificarAdmin(index).setVisible(true);
-    
-} 
-    }//GEN-LAST:event_btnModUActionPerformed
+        if(mensaje == 0){
+            int fila = tblUsuario.getSelectedRow();
+            String nombre = tblUsuario.getValueAt(fila, 0).toString();
+            con.borrarUsuario(nombre);
+            modeloU.removeRow(this.tblUsuario.getSelectedRow());
 
-    private void btnModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModActionPerformed
-         int index = this.tblUsuario.getSelectedRow();
-  
-  
-if(index == -1){
-    
-    JOptionPane.showMessageDialog(null, "No hay datos para modificar.\n"
-            + "Por favor, seleccione un registro de la tabla.", "Error en la operación",
-            JOptionPane.ERROR_MESSAGE);
-
-}else{
-    
-    new fModificarTrabajador(index).setVisible(true);
-    
-} 
-    }//GEN-LAST:event_btnModActionPerformed
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -367,7 +372,7 @@ if(index == -1){
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new fAdmin().setVisible(true); //se define el frame en escondido para que no se vea
+                new fAdmin().setVisible(false); //se define el frame en escondido para que no se vea
             }
         });
     }
@@ -383,7 +388,6 @@ if(index == -1){
     private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
