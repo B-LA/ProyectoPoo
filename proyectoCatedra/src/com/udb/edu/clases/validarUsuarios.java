@@ -1,7 +1,14 @@
 package com.udb.edu.clases;
 import com.udb.edu.conexion.conexion;
 import java.sql.SQLException;
+/*
+Roberto Carlos Ortega Vargas OV161179
+Juan Jose Landaverde Martinez LM 160780
+Deysi Guadalupe de Paz Sosa DS150922
+Ricardo Alberto Gonzalez Diaz GD181909
+Wiliam Vladimir Garcia Hernandez GH171489
 
+*/
 public class validarUsuarios {
 conexion n =  new conexion();
 

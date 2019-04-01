@@ -16,7 +16,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+/*
+Roberto Carlos Ortega Vargas OV161179
+Juan Jose Landaverde Martinez LM 160780
+Deysi Guadalupe de Paz Sosa DS150922
+Ricardo Alberto Gonzalez Diaz GD181909
+Wiliam Vladimir Garcia Hernandez GH171489
 
+*/
 
 /**
  *
@@ -24,79 +31,79 @@ import javax.swing.table.DefaultTableModel;
  */
 public class fPrincipal extends javax.swing.JFrame {
   
-conexion conn = new conexion();
-DefaultTableModel modeloCasos = new DefaultTableModel();
+conexion conn = new conexion(); //se instancia un metodo  de la clase conexion
+DefaultTableModel modeloCasos = new DefaultTableModel(); //se crea un modelo para la tabla casos
 
     /**
      * Creates new form fPrincipal
      * @param usuario
      * @throws java.sql.SQLException
      */
-String departamento;
-private String trabajador;
-validarUsuarios v = new validarUsuarios();
-    public fPrincipal(String usuario,String cod_gfe,String departamento) throws SQLException {
-        initComponents(); 
-        esconder(usuario);
-      insertarCasosTabla();
-      mostrarEstado(usuario);
-      obtenerUsuario(departamento);
-      this.trabajador = cod_gfe;
+String departamento; //valor global 
+private String trabajador; //valor global
+validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase validar usuarios
+    public fPrincipal(String usuario,String cod_gfe,String departamento) throws SQLException { //constructor principal
+        initComponents();  //esto lo crea netbeans
+        esconder(usuario); //metodo creado por mi
+      insertarCasosTabla(); //inicializa el metodo para que el modelo caso este visible
+      mostrarEstado(usuario); //metodo creado mas adelante esta la explicaion del mismo
+      obtenerUsuario(departamento); //este es un geter para la variable global departamento
+      this.trabajador = cod_gfe; //se define el valor c_gfe para el trabajador
     }
     
-        private void obtenerUsuario(String departamento){
-        this.departamento = departamento;
+        private void obtenerUsuario(String departamento){ //metodo setter para la variable global departamento
+        this.departamento = departamento; //se define el valor obtenido 
         }
         
-        private String obtenerDepartamento(){
-        return this.departamento;
+        private String obtenerDepartamento(){ //metodo getter para la variable global departamento
+        return this.departamento; //retorna el valor de la variable global
         }
-          public String getTrabajador() {
+          public String getTrabajador() {  //metodo getter para la variable global trabajador
         return trabajador;
     }
 
-    public void setTrabajador(String trabajador) {
+    public void setTrabajador(String trabajador) {//metodo setter para la variable global trabajador
         this.trabajador = trabajador;
     }
         
         
         
-        private void insertarCasosTabla(){
-        modeloCasos.addColumn("Nombre");
-        modeloCasos.addColumn("Apellido");
-        modeloCasos.addColumn("Descripcion");
-        modeloCasos.addColumn("Estado");
+        private void insertarCasosTabla(){ //metodo mencionado anteriormente este inserta las columnas y las filas a la tabla casos para su visualizacion
+        modeloCasos.addColumn("Nombre"); //se define la columna y su nombre
+        modeloCasos.addColumn("Apellido");//se define la columna y su nombre
+        modeloCasos.addColumn("Descripcion");//se define la columna y su nombre
+        modeloCasos.addColumn("Estado");//se define la columna y su nombre
         
-         ArrayList<obtenerCaso> deleT =  conn.obtenerCasos();
-        int numeroCasos = deleT.size();
-        modeloCasos.setNumRows(numeroCasos);
+         ArrayList<obtenerCaso> deleT =  conn.obtenerCasos(); //se crea un objeto de la clase lista que tengra como contenido le metodo obtener casos de la clase conexion
+        int numeroCasos = deleT.size(); //se cuenta cantidad de valores en la lista
+        modeloCasos.setNumRows(numeroCasos); // se defice el numero de celdas dependiendo del anterior conteo
     
-        for(int i = 0;i<numeroCasos;i++){
-        obtenerCaso ad = deleT.get(i);
-        String nombre = ad.getNombre();
-        String apellido = ad.getApellido();
-        String descipcion = ad.getDescripcion();
-        String estado = ad.getEstadoCaso();
+        for(int i = 0;i<numeroCasos;i++){ // un simple for para iterar los casos
+        obtenerCaso ad = deleT.get(i); //se crea un objeto de la clase obtener caso cuyo valor sera el index 
+        String nombre = ad.getNombre(); //de la clase se obtiene el nombre (un valor de la clase)
+        String apellido = ad.getApellido();//de la clase se obtiene el apellido (un valor de la clase)
+        String descipcion = ad.getDescripcion();//de la clase se obtiene el descripcion (un valor de la clase)
+        String estado = ad.getEstadoCaso();//de la clase se obtiene el estado del caso (un valor de la clase)
    
-        modeloCasos.setValueAt(nombre, i,0);
-        modeloCasos.setValueAt(apellido, i,1);
-        modeloCasos.setValueAt(descipcion, i,2);
-        modeloCasos.setValueAt(estado,i,3);
+        modeloCasos.setValueAt(nombre, i,0);//se inserta el valor en la posicion uno de la columna 
+        modeloCasos.setValueAt(apellido, i,1);//se inserta el valor en la posicion dos de la columna 
+        modeloCasos.setValueAt(descipcion, i,2);//se inserta el valor en la posicion tres de la columna ingresa
+        modeloCasos.setValueAt(estado,i,3);//se inserta el valor en la posicion catro de la columna 
  
         
         }
         }
         
-       private void esconder(String codigo) throws SQLException{
+       private void esconder(String codigo) throws SQLException{ //metodo para esconder pestanias del jtabbed panee
            
        
-              boolean tieneAvC =  conn.validarCaso(codigo);
-              System.out.println("Valor"+tieneAvC);
-              if(codigo == "admon"){
+              boolean tieneAvC =  conn.validarCaso(codigo); //valida si tiene avierto un caso AvC
+              System.out.println("Valor"+tieneAvC); //solo muesta el valor no tiene valor real en la ejecucion del proyecto
+              if(codigo == "admon"){ //valida si el valor ingresado es de un administrador por consiguiente elimina las pestanias donde se muestra agregar un caso
               this.tbnT.remove(1);
               this.tbnT.remove(0);
               }else
-              if(tieneAvC){
+              if(tieneAvC){//si tiene un caso asociado a el  
                
                   
                   this.tbnT.remove(2);
@@ -105,7 +112,7 @@ validarUsuarios v = new validarUsuarios();
               }
              
 
-          if(tieneAvC == false){
+          if(tieneAvC == false){ //si no tiene caso asignado elimina siempre la pestania de administrador y desabilita la pestania de mostrar estado
               this.tbnT.remove(2);
                 this.tbnT.setEnabledAt(this.tbnT.getTabCount() - 1, false); 
             }else{
@@ -115,7 +122,7 @@ validarUsuarios v = new validarUsuarios();
        }
     
 
-        private void mostrarEstado(String codigo) throws SQLException{  
+        private void mostrarEstado(String codigo) throws SQLException{  //este metodo solo se ejecutara mientras el usuario tenga un caso asignado
             ArrayList<obtenerCaso> deleT =  conn.insertarCaso(codigo);
             obtenerCaso ob = deleT.get(0);
             String Estado = ob.getEstadoCaso();
@@ -139,11 +146,11 @@ validarUsuarios v = new validarUsuarios();
         txU = new javax.swing.JTextField();
         btnTLT = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDtos = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
+        btnCrrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel2 = new javax.swing.JLabel();
@@ -173,10 +180,10 @@ validarUsuarios v = new validarUsuarios();
 
         jLabel4.setText("Apertura de un caso");
 
-        jButton1.setText("Cerrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCerrarActionPerformed(evt);
             }
         });
 
@@ -190,7 +197,7 @@ validarUsuarios v = new validarUsuarios();
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnCerrar)
                 .addGap(20, 20, 20))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(152, 152, 152)
@@ -213,16 +220,16 @@ validarUsuarios v = new validarUsuarios();
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTLT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnCerrar)
                 .addContainerGap())
         );
 
         tbnT.addTab("Casos", jPanel1);
 
-        jButton4.setText("Cerrar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnCrrar.setText("Cerrar");
+        btnCrrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnCrrarActionPerformed(evt);
             }
         });
 
@@ -244,7 +251,7 @@ validarUsuarios v = new validarUsuarios();
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(898, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(btnCrrar)
                 .addGap(25, 25, 25))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,7 +291,7 @@ validarUsuarios v = new validarUsuarios();
                 .addGap(18, 18, 18)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addComponent(btnCrrar)
                 .addGap(24, 24, 24))
         );
 
@@ -346,15 +353,15 @@ validarUsuarios v = new validarUsuarios();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnCrrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrrarActionPerformed
         this.dispose();
         new login().setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnCrrarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         this.dispose();
         new login().setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnTLTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTLTActionPerformed
         String nombreProyecto = this.txU.getText();
@@ -432,10 +439,10 @@ validarUsuarios v = new validarUsuarios();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCerrar;
+    private javax.swing.JButton btnCrrar;
     private javax.swing.JButton btnRev;
     private javax.swing.JButton btnTLT;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

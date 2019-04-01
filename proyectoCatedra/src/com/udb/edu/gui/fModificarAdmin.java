@@ -9,7 +9,14 @@ import com.udb.edu.clases.modificarAdmin;
 import com.udb.edu.clases.usuariosAdmin;
 import com.udb.edu.conexion.conexion;
 import java.util.ArrayList;
+/*
+Roberto Carlos Ortega Vargas OV161179
+Juan Jose Landaverde Martinez LM 160780
+Deysi Guadalupe de Paz Sosa DS150922
+Ricardo Alberto Gonzalez Diaz GD181909
+Wiliam Vladimir Garcia Hernandez GH171489
 
+*/
 /**
  *
  * @author neon

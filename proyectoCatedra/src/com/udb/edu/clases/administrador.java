@@ -1,8 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+Roberto Carlos Ortega Vargas OV161179
+Juan Jose Landaverde Martinez LM 160780
+Deysi Guadalupe de Paz Sosa DS150922
+Ricardo Alberto Gonzalez Diaz GD181909
+Wiliam Vladimir Garcia Hernandez GH171489
+
+*/
 package com.udb.edu.clases;
 
 /**
@@ -10,12 +13,13 @@ package com.udb.edu.clases;
  * @author neon
  */
 public class administrador {
-    
+    //variables de la clase
     private String nombre;
     private String apellido;
     private String telefono;
     private String departamento;
 
+    //constructor de la clase para definir un valor que no sea el por defecto  a cada variable global
     public administrador(String nombre,String apellido,String telefono,String departamento){
     this.nombre = nombre;
     this.apellido = apellido;
@@ -23,7 +27,7 @@ public class administrador {
     this.departamento = departamento;
     
     }
-    
+    //getter and setter
     public String getNombre() {
         return nombre;
     }
