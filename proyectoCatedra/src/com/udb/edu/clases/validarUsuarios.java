@@ -1,9 +1,6 @@
 package com.udb.edu.clases;
 import com.udb.edu.conexion.conexion;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
 public class validarUsuarios {
 conexion n =  new conexion();
@@ -13,17 +10,16 @@ private String usuario;
 private String contra;
 private String codigo;
 private boolean existe;
+private String departamento;
 
-   
 
 public void insertarCodigo(String codigo) throws SQLException{
    this.codigo = codigo;
-    System.out.println("Codigo " + codigo);
-
 }
-public void definir(boolean valorr){
+public void definir(boolean valorr) throws SQLException{
 this.existe = valorr;
-    System.out.println("es:"+ this.existe);
+
+
 }
 
 public boolean falsoOverdadero(){
@@ -35,6 +31,8 @@ public String usuario(String usuario){
  return usuario;   
 }
 
+
+
 public void  ValidarUsuarios(String usuario,String contra) throws SQLException{
 this.usuario = usuario;
 this.contra = contra;
@@ -42,7 +40,19 @@ System.out.println("Get usuario" + getUsuario());
 
 }
 
-    public String getCodigo() {
+
+
+     public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+ 
+   
+
+    public  String getCodigo() {
         return codigo;
     }
 
@@ -66,6 +76,13 @@ System.out.println("Get usuario" + getUsuario());
         this.contra = contra;
     }
 
-   
+     public boolean isExiste() {
+        return existe;
+    }
+
+    public void setExiste(boolean existe) {
+        this.existe = existe;
+    }
+
   
 }

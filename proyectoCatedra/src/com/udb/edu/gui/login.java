@@ -118,16 +118,19 @@ validarUsuarios v = new validarUsuarios();
        boolean usuarioAdmin =  p.validarExistenciaUsuario(nombre, contra);
        boolean usuarioTester =  c.validarTester(nombre, contra);
        boolean usuarioSuper = c.validarSuperUsuario(nombre, contra);
+       String codigo = c.obtenerCodigoCaso(nombre, contra);
+       String codTrabajador = c.obtenerCodGfe(nombre, contra);
+      String codDepartamento = c.obtenerDepartamento(nombre, contra);
        
         if(usuarioAdmin == true){
             this.dispose();
             String admon = "admin";
-             new fPrincipal(admon).setVisible(true);
+             new fPrincipal(admon,"","").setVisible(true);
         }else
             if(usuarioTester == true){
                 this.dispose();
-                String usuario = v.getCodigo();
-             new fPrincipal(usuario).setVisible(true);
+                
+             new fPrincipal(codigo,codTrabajador,codDepartamento).setVisible(true);
             }else
             if(usuarioSuper == true){
                 this.dispose();

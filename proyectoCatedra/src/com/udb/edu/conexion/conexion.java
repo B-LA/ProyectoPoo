@@ -31,6 +31,7 @@ public class conexion {
  ResultSet rs = null; //Definimos un result set
  String valorU ; 
  String valorD;
+ String valorT;
  
     public conexion(){ //constructor de la clase
         try { 
@@ -56,7 +57,7 @@ public class conexion {
     
     
   public boolean validarCaso(String codigo) throws SQLException{
-      validarUsuarios v = new validarUsuarios();
+      
   conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
       String slq  = "select * from solicitud_casos where cod_solicitud=?";
       prepSt = conn.prepareStatement(slq);
@@ -65,17 +66,85 @@ public class conexion {
       rs = prepSt.executeQuery();
      
       while(rs.next()){
-      String valorU = rs.getString("cod_solicitud");
-      if(valorU == codigo){    
+      String valor = rs.getString("cod_solicitud");
+          if(valor !=null){
           return true;
+    }
       }
-      }
-      
      return false;
-     
       }
      
- public ArrayList<obtenerCaso> insertarCaso(String codigo) throws SQLException{
+  public String obtenerDepartamento(String usuario,String contra) throws SQLException{
+   validarUsuarios v = new validarUsuarios();
+      conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+  String sql = "select * from usuarios_testers where nombre_usuario = ?  and apellido_usuario  = ?"; //se define la consulta sql
+   prepSt = conn.prepareStatement(sql); //se ejecuta la consulta sql
+            prepSt.setString(1,usuario); //se ingresa el valor usuario en la posicion uno 
+            prepSt.setString(2, contra); //se ingresa el valor contra en la posicion dos
+ rs = prepSt.executeQuery();
+ while(rs.next()){
+          valorU = rs.getString("cod_usuario"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
+          
+    
+   if(valorU != null){
+        v.insertarCodigo(valorU);
+        return valorU;
+   
+   }
+ }
+ return "";
+  }
+ 
+  public String obtenerCodGfe(String usuario,String contra) throws SQLException{
+   validarUsuarios v = new validarUsuarios();
+      conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+  String sql = "select * from usuarios_testers where nombre_usuario = ?  and apellido_usuario  = ?"; //se define la consulta sql
+   prepSt = conn.prepareStatement(sql); //se ejecuta la consulta sql
+            prepSt.setString(1,usuario); //se ingresa el valor usuario en la posicion uno 
+            prepSt.setString(2, contra); //se ingresa el valor contra en la posicion dos
+ rs = prepSt.executeQuery();
+ while(rs.next()){
+          valorU = rs.getString("cod_solicitud"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
+          valorD = rs.getString("cod_usuario");
+    
+   if(valorU != null){
+        v.insertarCodigo(valorU);
+        return valorU;
+   
+   }
+ }
+ return "";
+  }
+  
+  
+  public String obtenerCodigoCaso(String usuario,String contra) throws SQLException{
+   validarUsuarios v = new validarUsuarios();
+      conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
+  String sql = "select * from usuarios_testers where nombre_usuario = ?  and apellido_usuario  = ?"; //se define la consulta sql
+   prepSt = conn.prepareStatement(sql); //se ejecuta la consulta sql
+            prepSt.setString(1,usuario); //se ingresa el valor usuario en la posicion uno 
+            prepSt.setString(2, contra); //se ingresa el valor contra en la posicion dos
+ rs = prepSt.executeQuery();
+ while(rs.next()){
+          valorU = rs.getString("cod_solicitud"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
+          System.out.println("Codigo"+valorU);
+          
+   if(valorU != null){
+        v.insertarCodigo(valorU);
+       boolean valor = validarCaso(valorU);
+       System.out.println("valor caso"+valor);
+       v.definir(valor);
+        v.ValidarUsuarios(usuario, contra);
+        return valorU;
+   
+   }
+ }
+
+   return "";
+  }
+  
+  
+    public ArrayList<obtenerCaso> insertarCaso(String codigo) throws SQLException{
     
   
         ArrayList<obtenerCaso> listaUsuarios = new ArrayList<obtenerCaso>(); //se instancia el array  vacio
@@ -99,30 +168,6 @@ public class conexion {
             }
     return listaUsuarios;
     }
-  
-  
-  public boolean obtenerCodigoCaso(String usuario,String contra) throws SQLException{
-   validarUsuarios v = new validarUsuarios();
-      conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
-  String sql = "select * from usuarios_tester where nombre_usuario = ?  and apellido_usuario  = ?"; //se define la consulta sql
-   prepSt = conn.prepareStatement(sql); //se ejecuta la consulta sql
-            prepSt.setString(1,usuario); //se ingresa el valor usuario en la posicion uno 
-            prepSt.setString(2, contra); //se ingresa el valor contra en la posicion dos
- 
-          valorU = rs.getString("cod_solicitud"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
-          System.out.println("Codigo"+valorU);
-          
-   if(valorU != null){
-        v.insertarCodigo(valorU);
-        validarCaso(valorU);
-        v.ValidarUsuarios(usuario, contra);
-        insertarCaso(valorU);
-        return true;
-   
-   }else
-
-   return false;
-  }
     
   
   
@@ -161,8 +206,8 @@ public boolean validarTester(String usuario,String contra) throws SQLException{
           valorU = rs.getString("nombre_usuario"); //se obtiene el valor de la tabla pero en la posicion que es ingresado
          valorD = rs.getString("apellido_usuario"); //se obtiene el valor de la tabla en la posicion ingresada 
          if(valorU.equals(usuario) && valorD.equals(contra)){ //evalua si los valores debueltos son iguales a los ingresado
-           boolean codigoCaso =  obtenerCodigoCaso(usuario,contra);
-             System.out.println("codigo" + codigoCaso);
+          
+             
          }
          return true; //retorna verdadero si existe
          }

@@ -8,6 +8,7 @@ package com.udb.edu.gui;
 import com.udb.edu.clases.obtenerCaso;
 import com.udb.edu.clases.validarCaso;
 import com.udb.edu.clases.validarUsuarios;
+
 import com.udb.edu.conexion.conexion;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,23 +23,44 @@ import javax.swing.table.DefaultTableModel;
  * @author neon
  */
 public class fPrincipal extends javax.swing.JFrame {
-    
+  
 conexion conn = new conexion();
-    DefaultTableModel modeloCasos = new DefaultTableModel();
+DefaultTableModel modeloCasos = new DefaultTableModel();
 
     /**
      * Creates new form fPrincipal
      * @param usuario
      * @throws java.sql.SQLException
      */
-
-    public fPrincipal(String usuario) throws SQLException {
-        
-        initComponents();
-        esconderTBN(usuario);  
+String departamento;
+private String trabajador;
+validarUsuarios v = new validarUsuarios();
+    public fPrincipal(String usuario,String cod_gfe,String departamento) throws SQLException {
+        initComponents(); 
+        esconder(usuario);
       insertarCasosTabla();
+      mostrarEstado(usuario);
+      obtenerUsuario(departamento);
+      this.trabajador = cod_gfe;
     }
- 
+    
+        private void obtenerUsuario(String departamento){
+        this.departamento = departamento;
+        }
+        
+        private String obtenerDepartamento(){
+        return this.departamento;
+        }
+          public String getTrabajador() {
+        return trabajador;
+    }
+
+    public void setTrabajador(String trabajador) {
+        this.trabajador = trabajador;
+    }
+        
+        
+        
         private void insertarCasosTabla(){
         modeloCasos.addColumn("Nombre");
         modeloCasos.addColumn("Apellido");
@@ -65,42 +87,42 @@ conexion conn = new conexion();
         }
         }
         
-       
-    
-       private void esconderTBN(String usuario) throws SQLException{
-                validarUsuarios v = new validarUsuarios();
+       private void esconder(String codigo) throws SQLException{
            
-              boolean tieneAvC =  v.falsoOverdadero();
-              System.out.println("Tiene caso " + tieneAvC);
-             
-              if(usuario == "admin"){
-          
-          this.tbnT.remove(1);
-          this.tbnT.remove(0);
-          }else
+       
+              boolean tieneAvC =  conn.validarCaso(codigo);
+              System.out.println("Valor"+tieneAvC);
+              if(codigo == "admon"){
+              this.tbnT.remove(1);
+              this.tbnT.remove(0);
+              }else
               if(tieneAvC){
-                  //mostrarEstado(n.getCodigo());
-                  mostrarEstado(v.getCodigo());
+               
+                  
                   this.tbnT.remove(2);
                   this.tbnT.remove(0);
                  
-              }else
+              }
+             
+
           if(tieneAvC == false){
               this.tbnT.remove(2);
                 this.tbnT.setEnabledAt(this.tbnT.getTabCount() - 1, false); 
+            }else{
+                
             }
-           
+       
+       }
+    
+
+        private void mostrarEstado(String codigo) throws SQLException{  
+            ArrayList<obtenerCaso> deleT =  conn.insertarCaso(codigo);
+            obtenerCaso ob = deleT.get(0);
+            String Estado = ob.getEstadoCaso();
+            this.lblEst.setText(Estado);
         }
-
-private void mostrarEstado(String codigo) throws SQLException{
- validarUsuarios n =  new validarUsuarios();
-   
-    ArrayList<obtenerCaso> deleT =  conn.insertarCaso(codigo);
-obtenerCaso ob = deleT.get(0);
-String Estado = ob.getEstadoCaso();
-
-    System.out.println("El estado es: "+ Estado);
-}
+        
+        
         
    
    /**
@@ -338,8 +360,13 @@ String Estado = ob.getEstadoCaso();
         String nombreProyecto = this.txU.getText();
         String datosProyecto = this.txtDtos.getText();
         JOptionPane.showMessageDialog(null,"Caso abierto satisfactoriamente")   ;
+        
         this.tbnT.setSelectedIndex(1);
         this.tbnT.remove(0);
+       String departamento = obtenerDepartamento();
+        
+        validarCaso caso = new validarCaso(nombreProyecto,datosProyecto,departamento,getTrabajador()); 
+        conn.agregarCaso(caso);
     }//GEN-LAST:event_btnTLTActionPerformed
 
     private void btnRevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevActionPerformed
@@ -361,8 +388,7 @@ String Estado = ob.getEstadoCaso();
     }//GEN-LAST:event_btnRevActionPerformed
 
     private void txUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txUActionPerformed
-    
-    
+        // TODO add your handling code here:
     }//GEN-LAST:event_txUActionPerformed
 
     /**
@@ -396,7 +422,8 @@ String Estado = ob.getEstadoCaso();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new fPrincipal("").setVisible(true);
+                    new fPrincipal("","","").setVisible(true);
+                    
                 } catch (SQLException ex) {
                     Logger.getLogger(fPrincipal.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -427,5 +454,7 @@ String Estado = ob.getEstadoCaso();
     private javax.swing.JTextField txU;
     private javax.swing.JTextArea txtDtos;
     // End of variables declaration//GEN-END:variables
+
+  
 }
 
