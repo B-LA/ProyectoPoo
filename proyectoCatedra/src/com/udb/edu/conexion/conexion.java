@@ -15,6 +15,9 @@ import com.udb.edu.clases.usuariosAdmin;
 import com.udb.edu.clases.validarCaso;
 import com.udb.edu.clases.validarSuperUsuario;
 import com.udb.edu.clases.validarUsuarios;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -50,24 +53,41 @@ public class conexion {
     
     public void agregarCaso(validarCaso v){//metodo paara agregar casos
     //nombreProyecto,datosProyecto,departamento,getTrabajador()
+     //Instanciamos el objeto Calendar
+        //en fecha obtenemos la fecha y hora del sistema
+     //   "Incompleto", "Completo", "Aceptado", "Rechasado" 
+        Calendar fecha = new GregorianCalendar();
+        //Obtenemos el valor del año, mes, día,
+        //hora, minuto y segundo del sistema
+        //usando el método get y el parámetro correspondiente
+        int ano = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH);
+        int mes2 = mes+1;
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        String fechaS = String.valueOf(ano+"-"+mes2+"-"+dia);
      try {
          
          conn = DriverManager.getConnection(this.url, this.user, this.pass); //se instancia la conexion
          String sql = "Insert into solicitud_casos values(?,?,?,?,?,?,?,?,?)"; //se crea la sentencia sql
          prepSt = conn.prepareStatement(sql);
-         prepSt.setString(1,v.getCodigo());
-
+         prepSt.setString(1,v.getTrabajador());
+         
         prepSt.setString(2,v.getCodigo());
+int codigo = Integer.parseInt(v.getCodigo());
+int codigo2 = codigo +10;
+String codigo3 = String.valueOf(codigo2);
 
-        prepSt.setString(3,v.getCodigo());
+         System.out.println("codigo es" + codigo);
+        prepSt.setString(3,codigo3);
 
-        prepSt.setString(4,v.getTrabajador());
+        prepSt.setString(4,v.getCodigo());
         prepSt.setString(5,v.getNombre());
 
         prepSt.setString(6,v.getNombre());
         prepSt.setString(7,v.getDescripcion());
-
-        prepSt.setString(8,"Sin revisar");
+        
+        prepSt.setString(8,fechaS);
+        prepSt.setString(9,"Incompleto");
 
         prepSt.executeUpdate();
          

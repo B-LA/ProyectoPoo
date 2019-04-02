@@ -45,8 +45,7 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
     public fPrincipal(String usuario,String cod_gfe,String departamento) throws SQLException { //constructor principal
         initComponents();  //esto lo crea netbeans
         esconder(usuario); //metodo creado por mi
-      insertarCasosTabla(); //inicializa el metodo para que el modelo caso este visible
-      mostrarEstado(usuario); //metodo creado mas adelante esta la explicaion del mismo
+      insertarCasosTabla(); //inicializa el metodo para que el modelo caso este visto
       obtenerUsuario(departamento); //este es un geter para la variable global departamento
       this.trabajador = cod_gfe; //se define el valor c_gfe para el trabajador
     }
@@ -105,7 +104,8 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
               }else
               if(tieneAvC){//si tiene un caso asociado a el  
                
-                  
+                   mostrarEstado(codigo); //metodo creado mas adelante esta la explicaion del mismo
+                 
                   this.tbnT.remove(2);
                   this.tbnT.remove(0);
                  
@@ -126,6 +126,23 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
             ArrayList<obtenerCaso> deleT =  conn.insertarCaso(codigo);
             obtenerCaso ob = deleT.get(0);
             String Estado = ob.getEstadoCaso();
+            //"Incompleto", "Completo", "Aceptado", "Rechasado" 
+            if(Estado.equals("Incompleto")){
+            this.progresB.setValue(25);
+            this.progresB.setString(Estado);
+            }else
+                if(Estado.equals("Completo")){
+                this.progresB.setValue(75);
+                this.progresB.setString(Estado);
+                }else
+                    if(Estado.equals("Aceptado")){
+                    this.progresB.setValue(100);
+                    this.progresB.setString(Estado);
+                    }else
+                        if(Estado.equals("Rechasado")){
+                        this.lblR.setText(Estado);
+                        this.progresB.setValue(0);
+                        }
             this.lblEst.setText(Estado);
         }
         
@@ -152,11 +169,11 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
         jPanel2 = new javax.swing.JPanel();
         btnCrrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        progresB = new javax.swing.JProgressBar();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        lblR = new javax.swing.JLabel();
         lblEst = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -241,7 +258,7 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
 
         jLabel5.setText("Observaciones");
 
-        jLabel6.setText("OB");
+        lblR.setText("OB");
 
         lblEst.setText("EST");
 
@@ -262,7 +279,7 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
                         .addGap(205, 205, 205)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(progresB, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(263, 263, 263)
@@ -270,7 +287,7 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(lblEst)
                                 .addGap(272, 272, 272)
-                                .addComponent(jLabel6)))))
+                                .addComponent(lblR)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -284,12 +301,12 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
+                    .addComponent(lblR)
                     .addComponent(lblEst))
                 .addGap(42, 42, 42)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(progresB, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
                 .addComponent(btnCrrar)
                 .addGap(24, 24, 24))
@@ -448,14 +465,14 @@ validarUsuarios v = new validarUsuarios(); //se intancia un objeto de la clase v
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblEst;
+    private javax.swing.JLabel lblR;
+    private javax.swing.JProgressBar progresB;
     private javax.swing.JTable tbCasos;
     private javax.swing.JTabbedPane tbnT;
     private javax.swing.JTextField txU;

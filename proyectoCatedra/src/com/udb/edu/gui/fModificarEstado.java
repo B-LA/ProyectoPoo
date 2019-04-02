@@ -166,18 +166,7 @@ int index2 = index;
     }//GEN-LAST:event_cmbEstadoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      /*ArrayList<administrador> deleT =  con.obtenerUsuarios();  
-        String nombre = this.txtNom.getText();
-        String apellido = this.txtAp.getText();
-         String tel =  this.txtTel.getText();
-         int index = devolverDatos();
-         administrador adU =  deleT.get(index); ;
-         String adO = adU.getDepartamento();
-         administrador ad = new administrador(nombre,apellido,tel,adO);
-         
-         con.modificarTrabajador(ad,index);
-         
-   this.dispose();*/
+    
       ArrayList<obtenerCaso> dtos = con.obtenerCasos(); 
       String estado = this.cmbEstado.getSelectedItem().toString();
       obtenerCaso adU =  dtos.get(index2); 
