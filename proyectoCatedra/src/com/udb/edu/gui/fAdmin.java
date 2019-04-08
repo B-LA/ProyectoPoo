@@ -338,7 +338,7 @@ conexion con = new conexion();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
-        int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este administrador?");
+        int mensaje = JOptionPane.showConfirmDialog(this, "Estas seguro de eliminar este trabajador?");
 
         if(mensaje == 0){
             int fila = tblUsuario.getSelectedRow();
